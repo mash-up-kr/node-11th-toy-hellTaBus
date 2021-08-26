@@ -1,41 +1,38 @@
 import {Injectable} from '@nestjs/common';
-import {getRepository} from 'typeorm';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
 import {CreateUserDto} from './dto/create-user.dto';
 import {User} from './user.entity';
 
 @Injectable()
 export class UserService {
-  createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = new User();
-    user.id = createUserDto.id;
-    user.password = createUserDto.password;
-    user.nickname = createUserDto.nickname;
-    user.email = createUserDto.email;
-    user.birthday = createUserDto.birthday;
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-    return getRepository(User).save(user);
+  async createUser(createUserDto: CreateUserDto) {
+    const userData = await this.userRepository.save({
+      id: createUserDto.id,
+      password: createUserDto.password,
+      nickname: createUserDto.nickname,
+      email: createUserDto.email,
+      birthday: createUserDto.birthday,
+    });
+
+    delete userData.password;
+    return userData;
   }
 
   async getAllUser(): Promise<User[]> {
-    const users: User[] = await getRepository(User)
-        .createQueryBuilder('user')
-        .getMany();
-    return users;
+    return this.userRepository.find();
   }
 
   async getUser(userId: number): Promise<User> {
-    const user: User = await getRepository(User)
-        .createQueryBuilder('user')
-        .where('user._id = :id', {id: userId})
-        .getOne();
-    return user;
+    return this.userRepository.findOne(userId);
   }
 
   async deleteUser(userId: number): Promise<void> {
-    await getRepository(User)
-        .createQueryBuilder('user')
-        .where('user._id = :id', {id: userId})
-        .delete()
-        .execute();
+    await this.userRepository.delete(userId);
   }
 }
