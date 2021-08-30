@@ -1,6 +1,6 @@
 import {CreateUserDto} from './dto/createUserDto';
 import {UpdateUserDto} from './dto/updateUserDto';
-import {User} from './user.entity';
+import {User} from './entities/user.entity';
 import {UserService} from './user.service';
 import {
   ApiCreatedResponse,
