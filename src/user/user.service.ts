@@ -1,9 +1,12 @@
-import {Injectable} from '@nestjs/common';
+import {BadRequestException, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {CreateUserDto} from './dto/createUserDto';
 import {User} from './entities/user.entity';
-import { Profile } from '../profile/entities/profile.entity';
+import {Profile} from '../profile/entities/profile.entity';
+
+import * as bcrypt from 'bcrypt';
+import {Err} from '../error';
 
 @Injectable()
 export class UserService {
@@ -12,11 +15,28 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Profile)
     private readonly profileRepository: Repository<Profile>,
-  ) {}
+  ) {
+  }
+
+  async findUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    return user;
+  }
 
   async createUser(createUserDto: CreateUserDto) {
+    const user = await this.findUserByEmail(createUserDto.email);
+
+    if (user) throw new BadRequestException(Err.EXISTING_USER);
+
+    const password = await bcrypt.hash(createUserDto.password, 12);
+
     const userData = await this.userRepository.save({
-      password: createUserDto.password,
+      password,
       email: createUserDto.email,
     });
 
@@ -24,7 +44,7 @@ export class UserService {
       nickname: createUserDto.nickname,
       birthday: createUserDto.birthday,
       userId: userData.id,
-    })
+    });
 
     delete userData.password;
     return userData;
