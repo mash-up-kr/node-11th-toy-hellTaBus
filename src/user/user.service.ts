@@ -3,21 +3,28 @@ import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {CreateUserDto} from './dto/createUserDto';
 import {User} from './entities/user.entity';
+import { Profile } from '../profile/entities/profile.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Profile)
+    private readonly profileRepository: Repository<Profile>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
     const userData = await this.userRepository.save({
       password: createUserDto.password,
-      nickname: createUserDto.nickname,
       email: createUserDto.email,
-      birthday: createUserDto.birthday,
     });
+
+    await this.profileRepository.save({
+      nickname: createUserDto.nickname,
+      birthday: createUserDto.birthday,
+      userId: userData.id,
+    })
 
     delete userData.password;
     return userData;

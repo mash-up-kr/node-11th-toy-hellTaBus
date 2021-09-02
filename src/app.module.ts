@@ -7,6 +7,7 @@ import {UserModule} from './user/user.module';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import { ProfileModule } from './profile/profile.module';
+import { AuthModule } from './auth/auth.module';
 
 import * as ormconfig from '../ormconfig';
 
@@ -21,6 +22,7 @@ import * as ormconfig from '../ormconfig';
         // }),
         UserModule,
         ProfileModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
