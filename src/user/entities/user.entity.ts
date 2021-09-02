@@ -5,7 +5,7 @@ export class User {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({length: 20})
+  @Column({length: 60})
   password: string;
 
   @Column({length: 255, unique: true})
