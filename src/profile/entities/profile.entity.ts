@@ -1,9 +1,9 @@
 import {
-  Column,
+  Column, CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn, UpdateDateColumn,
 } from 'typeorm';
 import {User} from '../../user/entities/user.entity';
 
@@ -18,10 +18,10 @@ export class Profile {
   @Column('date')
   birthday: Date;
 
-  @Column('timestamp', {name: 'created_at', default: () => 'now()'})
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column('timestamp', {name: 'updated_at', default: () => 'now()'})
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToOne(() => User)

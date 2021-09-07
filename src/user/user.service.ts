@@ -33,21 +33,21 @@ export class UserService {
 
     if (user) throw new BadRequestException(Err.EXISTING_USER);
 
-    const password = await bcrypt.hash(createUserDto.password, 12);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
 
-    const userData = await this.userRepository.save({
-      password,
+    const createdUser = await this.userRepository.save({
+      password: hashedPassword,
       email: createUserDto.email,
     });
 
     await this.profileRepository.save({
       nickname: createUserDto.nickname,
       birthday: createUserDto.birthday,
-      userId: userData.id,
+      userId: createdUser.id,
     });
 
-    delete userData.password;
-    return userData;
+    delete createdUser.password;
+    return createdUser;
   }
 
   async getAllUser(): Promise<User[]> {

@@ -1,4 +1,9 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {
+  Column,
+  CreateDateColumn, DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn, UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('user')
 export class User {
@@ -11,6 +16,12 @@ export class User {
   @Column({length: 255, unique: true})
   email: string;
 
-  @Column('timestamp', {name: 'deleted_at', nullable: true})
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
   deletedAt: Date | null;
 }

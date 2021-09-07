@@ -19,8 +19,8 @@ export class AuthService {
       where: {email},
     });
 
-    const password = await bcrypt.compare(pass, user.password);
-    if (password) {
+    const isSamePassword = await bcrypt.compare(pass, user.password);
+    if (isSamePassword) {
       const {...userWithoutPassword} = user;
       return userWithoutPassword;
     }
