@@ -1,27 +1,34 @@
+import { Post } from 'src/post/entities/post.entity';
 import {
-  Column,
-  CreateDateColumn, DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('user')
 export class User {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
-  @Column({length: 60})
-  password: string;
+    @Column({ length: 60 })
+    password: string;
 
-  @Column({length: 255, unique: true})
-  email: string;
+    @Column({ length: 255, unique: true })
+    email: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 
-  @DeleteDateColumn()
-  deletedAt: Date | null;
+    @DeleteDateColumn()
+    deletedAt: Date | null;
+
+    @OneToMany(() => Post, post => post.User)
+    Post: Post[];
 }

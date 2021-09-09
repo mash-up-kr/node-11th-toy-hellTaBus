@@ -15,7 +15,7 @@ const config: TypeOrmModuleOptions = {
     },
     autoLoadEntities: true,
     charset: 'utf8mb4',
-    synchronize: false,
+    synchronize: true,
 };
 
 export = config;
