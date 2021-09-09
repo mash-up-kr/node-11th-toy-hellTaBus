@@ -6,15 +6,15 @@ import {
     Index,
     JoinColumn,
     ManyToOne,
-    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { PostLike } from './postlike.entity';
+import { Post } from './post.entity';
 
 @Index('UserId', ['UserId'], {})
-@Entity('post')
-export class Post {
+@Index('PostId', ['PostId'], {})
+@Entity('postLike')
+export class PostLike {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
@@ -22,7 +22,7 @@ export class Post {
     UserId: number;
 
     @Column()
-    caption: string;
+    PostId: number;
 
     @UpdateDateColumn()
     updatedAt: Date;
@@ -30,13 +30,17 @@ export class Post {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @ManyToOne(() => User, user => user.Post, {
+    @ManyToOne(() => User, user => user.PostLike, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
     @JoinColumn([{ name: 'UserId', referencedColumnName: 'id' }])
     User: User;
 
-    @OneToMany(() => PostLike, postLike => postLike.Post)
-    PostLike: PostLike[];
+    @ManyToOne(() => Post, post => post.PostLike, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    @JoinColumn([{ name: 'PostId', referencedColumnName: 'id' }])
+    Post: Post;
 }

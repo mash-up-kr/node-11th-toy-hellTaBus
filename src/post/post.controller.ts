@@ -36,11 +36,21 @@ export class PostController {
         @Param('id', ParseIntPipe) id: number,
         @Body() updatePostDto: UpdatePostDto,
     ) {
-        return this.postService.update(id, updatePostDto, req.user.id);
+        return this.postService.updatePost(id, updatePostDto, req.user.id);
     }
 
     @Delete(':id')
-    remove(@Req() req, @Param('id', ParseIntPipe) id: number) {
-        return this.postService.remove(id, req.user.id);
+    deletePost(@Req() req, @Param('id', ParseIntPipe) id: number) {
+        return this.postService.deletePost(id, req.user.id);
+    }
+
+    @Get(':id/like')
+    likePost(@Req() req, @Param('id', ParseIntPipe) id: number) {
+        return this.postService.likePost(id, req.user.id);
+    }
+
+    @Delete(':id/dislike')
+    dislikePost(@Req() req, @Param('id', ParseIntPipe) id: number) {
+        return this.postService.dislikePost(id, req.user.id);
     }
 }
