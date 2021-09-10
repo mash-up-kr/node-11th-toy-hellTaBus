@@ -33,19 +33,20 @@ export class PostService {
             const HahstagExisted = await this.hashtagRepository.findOne({
                 where: { tag: hashtag },
             });
-            await this.hashtag_postRepository.save({
-                HashtagId: HahstagExisted.id,
-                PostId: PostReturned.id,
-            });
+
             if (!HahstagExisted) {
                 const HahstagReturned = await this.hashtagRepository.save({
                     tag: hashtag,
                 });
-                await this.hashtag_postRepository.save({
+                return await this.hashtag_postRepository.save({
                     HashtagId: HahstagReturned.id,
                     PostId: PostReturned.id,
                 });
             }
+            await this.hashtag_postRepository.save({
+                HashtagId: HahstagExisted.id,
+                PostId: PostReturned.id,
+            });
         });
     }
 
@@ -69,7 +70,6 @@ export class PostService {
             where: { id },
             select: ['UserId'],
         });
-        console.log(post);
         if (post.UserId !== userId) {
             throw new UnauthorizedException();
         }
