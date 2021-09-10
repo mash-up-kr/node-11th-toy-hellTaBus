@@ -22,6 +22,6 @@ export class Hashtag {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @OneToMany(() => Hashtag_Post, hashtag_post => hashtag_post.Hashtag)
-    Post: Hashtag_Post[];
+    @OneToMany(() => Hashtag_Post, hashtag_post => hashtag_post.hashtag)
+    post: Hashtag_Post[];
 }

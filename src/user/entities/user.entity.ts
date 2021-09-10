@@ -30,9 +30,9 @@ export class User {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @OneToMany(() => Post, post => post.User)
-    Post: Post[];
+    @OneToMany(() => Post, post => post.user)
+    post: Post[];
 
-    @OneToMany(() => PostLike, postLike => postLike.User)
-    PostLike: PostLike[];
+    @OneToMany(() => PostLike, postLike => postLike.user)
+    postLike: PostLike[];
 }

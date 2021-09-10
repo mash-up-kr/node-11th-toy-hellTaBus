@@ -21,10 +21,10 @@ export class Hashtag_Post {
     id: number;
 
     @Column()
-    HashtagId: number;
+    hashtagId: number;
 
     @Column()
-    PostId: number;
+    postId: number;
 
     @UpdateDateColumn()
     updatedAt: Date;
@@ -32,17 +32,17 @@ export class Hashtag_Post {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @ManyToOne(() => Post, post => post.Hashtag, {
+    @ManyToOne(() => Post, post => post.hashtag, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
-    @JoinColumn([{ name: 'PostId', referencedColumnName: 'id' }])
-    Post: Post;
+    @JoinColumn([{ name: 'postId', referencedColumnName: 'id' }])
+    post: Post;
 
-    @ManyToOne(() => Hashtag, hashtag => hashtag.Post, {
+    @ManyToOne(() => Hashtag, hashtag => hashtag.post, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
-    @JoinColumn([{ name: 'HashtagId', referencedColumnName: 'id' }])
-    Hashtag: Hashtag;
+    @JoinColumn([{ name: 'hashtagId', referencedColumnName: 'id' }])
+    hashtag: Hashtag;
 }

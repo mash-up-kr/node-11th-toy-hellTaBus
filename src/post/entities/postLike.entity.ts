@@ -11,18 +11,16 @@ import {
 } from 'typeorm';
 import { Post } from './post.entity';
 
-@Index('UserId', ['UserId'], {})
-@Index('PostId', ['PostId'], {})
 @Entity('postLike')
 export class PostLike {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column()
-    UserId: number;
+    userId: number;
 
     @Column()
-    PostId: number;
+    postId: number;
 
     @UpdateDateColumn()
     updatedAt: Date;
@@ -30,17 +28,17 @@ export class PostLike {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @ManyToOne(() => User, user => user.PostLike, {
+    @ManyToOne(() => User, user => user.postLike, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
-    @JoinColumn([{ name: 'UserId', referencedColumnName: 'id' }])
-    User: User;
+    @JoinColumn([{ name: 'userId', referencedColumnName: 'id' }])
+    user: User;
 
-    @ManyToOne(() => Post, post => post.PostLike, {
+    @ManyToOne(() => Post, post => post.postLike, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
-    @JoinColumn([{ name: 'PostId', referencedColumnName: 'id' }])
-    Post: Post;
+    @JoinColumn([{ name: 'postId', referencedColumnName: 'id' }])
+    post: Post;
 }

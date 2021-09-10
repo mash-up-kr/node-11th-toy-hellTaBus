@@ -1,7 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    HttpException,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { use } from 'passport';
-import { IsNull, Repository } from 'typeorm';
+import { Err } from 'src/error';
+import { Connection, IsNull, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Hashtag } from './entities/hashtag.entity';
@@ -20,32 +26,43 @@ export class PostService {
         private readonly hashtagRepository: Repository<Hashtag>,
         @InjectRepository(Hashtag_Post)
         private readonly hashtag_postRepository: Repository<Hashtag_Post>,
+        private connection: Connection,
     ) {}
 
     async createPost(caption: string, userId: number) {
-        const PostReturned = await this.postRepository.save({
-            caption,
-            UserId: userId,
-        });
-        const hashtags = caption.match(/#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\w]+/g) || [];
-        hashtags.map(async hashtag => {
-            const ExistedHahstag = await this.hashtagRepository.findOne({
-                where: { tag: hashtag },
+        let isSuccess = true;
+        const queryRunner = this.connection.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        try {
+            const post = await this.postRepository.save({
+                caption,
+                userId: userId,
             });
-            if (!ExistedHahstag) {
-                const ReturnedHahstag = await this.hashtagRepository.save({
-                    tag: hashtag,
+            const hashtags = caption.match(/#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\w]+/g) || [];
+            hashtags.map(async hashtag => {
+                let returnedHahstag = await this.hashtagRepository.findOne({
+                    where: { tag: hashtag },
                 });
+                if (!returnedHahstag) {
+                    returnedHahstag = await this.hashtagRepository.save({
+                        tag: hashtag,
+                    });
+                }
                 return await this.hashtag_postRepository.save({
-                    HashtagId: ReturnedHahstag.id,
-                    PostId: PostReturned.id,
+                    hashtagId: returnedHahstag.id,
+                    postId: post.id,
                 });
-            }
-            await this.hashtag_postRepository.save({
-                HashtagId: ExistedHahstag.id,
-                PostId: PostReturned.id,
             });
-        });
+            await queryRunner.commitTransaction();
+        } catch (err) {
+            console.log(err);
+            await queryRunner.rollbackTransaction();
+            isSuccess = false;
+        } finally {
+            await queryRunner.release();
+            return isSuccess;
+        }
     }
 
     async getPost(id: number) {
@@ -55,33 +72,43 @@ export class PostService {
     async updatePost(id: number, updatePostDto: UpdatePostDto, userId: number) {
         const post = await this.postRepository.findOne({
             where: { id },
-            select: ['UserId'],
+            select: ['userId'],
         });
-        if (post.UserId !== userId) {
+        if (post.userId !== userId) {
             throw new UnauthorizedException();
         }
-        await this.postRepository.update(id, updatePostDto);
+        return await this.postRepository.update(id, updatePostDto);
     }
 
     async deletePost(id: number, userId: number) {
         const post = await this.postRepository.findOne({
             where: { id },
-            select: ['UserId'],
+            select: ['userId'],
         });
-        if (post.UserId !== userId) {
+        if (post.userId !== userId) {
             throw new UnauthorizedException();
         }
         await this.postRepository.delete(id);
     }
 
     async likePost(id: number, userId: number) {
+        const alreadyLike = await this.postLikeRepository.findOne({
+            postId: id,
+            userId: userId,
+        });
+        if (!alreadyLike) throw new BadRequestException(Err.ALREADY_LIKE);
         await this.postLikeRepository.save({
-            PostId: id,
-            UserId: userId,
+            postId: id,
+            userId: userId,
         });
     }
 
     async dislikePost(id: number, userId: number) {
+        const alreadyLike = await this.postLikeRepository.findOne({
+            postId: id,
+            userId: userId,
+        });
+        if (!alreadyLike) throw new BadRequestException(Err.ALREADY_DISLIKE);
         await this.postLikeRepository
             .createQueryBuilder('postLike')
             .delete()
