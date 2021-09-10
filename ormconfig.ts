@@ -4,7 +4,7 @@ import * as path from 'path';
 const config: TypeOrmModuleOptions = {
     type: 'mysql',
     host: 'localhost',
-    port: 3306,
+    port: 3309,
     username: 'root',
     password: 'root',
     database: 'hell_ta_bus',
