@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { ProfileModule } from './profile/profile.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
+import { HashtagModule } from './hashtag/hashtag.module';
 
 import * as ormconfig from '../ormconfig';
 
@@ -25,6 +26,7 @@ import * as ormconfig from '../ormconfig';
         AuthModule,
         ProfileModule,
         PostModule,
+        HashtagModule,
     ],
     controllers: [AppController],
     providers: [AppService],
