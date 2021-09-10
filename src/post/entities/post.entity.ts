@@ -1,3 +1,4 @@
+import { Hash } from 'crypto';
 import { User } from 'src/user/entities/user.entity';
 import {
     Column,
@@ -5,11 +6,14 @@ import {
     Entity,
     Index,
     JoinColumn,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { Hashtag } from './hashtag.entity';
+import { Hashtag_Post } from './hashtag_post.entity';
 import { PostLike } from './postlike.entity';
 
 @Index('UserId', ['UserId'], {})
@@ -39,4 +43,7 @@ export class Post {
 
     @OneToMany(() => PostLike, postLike => postLike.Post)
     PostLike: PostLike[];
+
+    @OneToMany(() => Hashtag_Post, hashtag_post => hashtag_post.Post)
+    Hashtag: Hashtag_Post[];
 }

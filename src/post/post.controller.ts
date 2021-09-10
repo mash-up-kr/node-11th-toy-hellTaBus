@@ -44,7 +44,7 @@ export class PostController {
         return this.postService.deletePost(id, req.user.id);
     }
 
-    @Get(':id/like')
+    @Post(':id/like')
     likePost(@Req() req, @Param('id', ParseIntPipe) id: number) {
         return this.postService.likePost(id, req.user.id);
     }

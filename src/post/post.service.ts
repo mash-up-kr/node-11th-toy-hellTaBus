@@ -4,6 +4,8 @@ import { use } from 'passport';
 import { IsNull, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Hashtag } from './entities/hashtag.entity';
+import { Hashtag_Post } from './entities/hashtag_post.entity';
 import { Post } from './entities/post.entity';
 import { PostLike } from './entities/postlike.entity';
 
@@ -14,12 +16,36 @@ export class PostService {
         private readonly postRepository: Repository<Post>,
         @InjectRepository(PostLike)
         private readonly postLikeRepository: Repository<PostLike>,
+        @InjectRepository(Hashtag)
+        private readonly hashtagRepository: Repository<Hashtag>,
+        @InjectRepository(Hashtag_Post)
+        private readonly hashtag_postRepository: Repository<Hashtag_Post>,
     ) {}
 
     async createPost(caption: string, userId: number) {
-        await this.postRepository.save({
+        const PostReturned = await this.postRepository.save({
             caption: caption,
             UserId: userId,
+        });
+
+        const hashtags = caption.match(/#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\w]+/g) || [];
+        hashtags.map(async hashtag => {
+            const HahstagExisted = await this.hashtagRepository.findOne({
+                where: { tag: hashtag },
+            });
+            await this.hashtag_postRepository.save({
+                HashtagId: HahstagExisted.id,
+                PostId: PostReturned.id,
+            });
+            if (!HahstagExisted) {
+                const HahstagReturned = await this.hashtagRepository.save({
+                    tag: hashtag,
+                });
+                await this.hashtag_postRepository.save({
+                    HashtagId: HahstagReturned.id,
+                    PostId: PostReturned.id,
+                });
+            }
         });
     }
 
@@ -58,7 +84,7 @@ export class PostService {
     }
 
     async dislikePost(id: number, userId: number) {
-        const like = await this.postLikeRepository
+        await this.postLikeRepository
             .createQueryBuilder('postLike')
             .delete()
             .from(PostLike)
