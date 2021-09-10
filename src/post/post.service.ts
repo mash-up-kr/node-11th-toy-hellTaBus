@@ -24,27 +24,25 @@ export class PostService {
 
     async createPost(caption: string, userId: number) {
         const PostReturned = await this.postRepository.save({
-            caption: caption,
+            caption,
             UserId: userId,
         });
-
         const hashtags = caption.match(/#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\w]+/g) || [];
         hashtags.map(async hashtag => {
-            const HahstagExisted = await this.hashtagRepository.findOne({
+            const ExistedHahstag = await this.hashtagRepository.findOne({
                 where: { tag: hashtag },
             });
-
-            if (!HahstagExisted) {
-                const HahstagReturned = await this.hashtagRepository.save({
+            if (!ExistedHahstag) {
+                const ReturnedHahstag = await this.hashtagRepository.save({
                     tag: hashtag,
                 });
                 return await this.hashtag_postRepository.save({
-                    HashtagId: HahstagReturned.id,
+                    HashtagId: ReturnedHahstag.id,
                     PostId: PostReturned.id,
                 });
             }
             await this.hashtag_postRepository.save({
-                HashtagId: HahstagExisted.id,
+                HashtagId: ExistedHahstag.id,
                 PostId: PostReturned.id,
             });
         });
