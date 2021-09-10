@@ -1,4 +1,3 @@
-import { Hash } from 'crypto';
 import { User } from 'src/user/entities/user.entity';
 import {
     Column,
@@ -12,7 +11,6 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Hashtag } from './hashtag.entity';
 import { Hashtag_Post } from './hashtag_post.entity';
 import { PostLike } from './postlike.entity';
 

@@ -1,19 +1,12 @@
-import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     DeleteDateColumn,
     Entity,
-    Index,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { Hashtag_Post } from './hashtag_post.entity';
-import { Post } from './post.entity';
 
 @Entity('hashtag')
 export class Hashtag {
