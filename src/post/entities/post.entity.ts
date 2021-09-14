@@ -15,30 +15,30 @@ import {PostLike} from './postlike.entity';
 @Index('userId', ['userId'], {})
 @Entity('post')
 export class Post {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
-    @Column()
-    userId: number;
+  @Column()
+  userId: number;
 
-    @Column()
-    caption: string;
+  @Column()
+  caption: string;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @DeleteDateColumn()
-    deletedAt: Date | null;
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 
-    @ManyToOne(() => User, (user) => user.post, {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-    })
-    user: User;
+  @ManyToOne(() => User, (user) => user.post, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  user: User;
 
-    @OneToMany(() => PostLike, (postLike) => postLike.postId)
-    postLike: PostLike[];
+  @OneToMany(() => PostLike, (postLike) => postLike.postId)
+  postLike: PostLike[];
 
-    @OneToMany(() => HashtagPost, (hashtagPost) => hashtagPost.postId)
-    hashtag: HashtagPost[];
+  @OneToMany(() => HashtagPost, (hashtagPost) => hashtagPost.postId)
+  hashtag: HashtagPost[];
 }

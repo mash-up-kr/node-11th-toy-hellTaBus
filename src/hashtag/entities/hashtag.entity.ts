@@ -10,18 +10,18 @@ import {HashtagPost} from '../../post/entities/hashtagPost.entity';
 
 @Entity('hashtag')
 export class Hashtag {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
-    @Column()
-    tag: string;
+  @Column()
+  tag: string;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @DeleteDateColumn()
-    deletedAt: Date | null;
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 
-    @OneToMany(() => HashtagPost, (hashtagPost) => hashtagPost.hashtagId)
-    post: HashtagPost[];
+  @OneToMany(() => HashtagPost, (hashtagPost) => hashtagPost.hashtagId)
+  post: HashtagPost[];
 }

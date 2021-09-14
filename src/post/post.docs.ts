@@ -6,7 +6,7 @@ import {PostController} from './post.controller';
 import {CreatePostDto} from './dto/create-post.dto';
 
 type SwaggerMethodDoc<T> = {
-    [K in keyof T]: (description: string) => MethodDecorator;
+  [K in keyof T]: (description: string) => MethodDecorator;
 };
 
 export const ApiDocs: SwaggerMethodDoc<PostController> = {

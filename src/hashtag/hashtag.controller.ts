@@ -8,20 +8,20 @@ import {HashtagService} from './hashtag.service';
 export class HashtagController {
   constructor(private readonly hashtagService: HashtagService) {}
 
-    @Get(':id')
-    @ApiDocs.findHashtag('해시태그 조회')
+  @Get(':id')
+  @ApiDocs.findHashtag('해시태그 조회')
   findHashtag(@Param('id', ParseIntPipe) id: number) {
     return this.hashtagService.findHashtag(id);
   }
 
-    @Get('/search/:word')
-    @ApiParam({
-      name: 'word',
-      required: true,
-      description: '단어',
-    })
-    @ApiDocs.findHashtag('단어로 해시태그 조회')
-    findHashtagByWord(@Param('word') word: string) {
-      return this.hashtagService.findHashtagByWord(word);
-    }
+  @Get('/search/:word')
+  @ApiParam({
+    name: 'word',
+    required: true,
+    description: '단어',
+  })
+  @ApiDocs.findHashtag('단어로 해시태그 조회')
+  findHashtagByWord(@Param('word') word: string) {
+    return this.hashtagService.findHashtagByWord(word);
+  }
 }

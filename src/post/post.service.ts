@@ -13,15 +13,15 @@ import {PostLike} from './entities/postlike.entity';
 @Injectable()
 export class PostService {
   constructor(
-        @InjectRepository(Post)
-        private readonly postRepository: Repository<Post>,
-        @InjectRepository(PostLike)
-        private readonly postLikeRepository: Repository<PostLike>,
-        @InjectRepository(Hashtag)
-        private readonly hashtagRepository: Repository<Hashtag>,
-        @InjectRepository(HashtagPost)
-        private readonly HashtagPostRepository: Repository<HashtagPost>,
-        private connection: Connection,
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
+    @InjectRepository(PostLike)
+    private readonly postLikeRepository: Repository<PostLike>,
+    @InjectRepository(Hashtag)
+    private readonly hashtagRepository: Repository<Hashtag>,
+    @InjectRepository(HashtagPost)
+    private readonly HashtagPostRepository: Repository<HashtagPost>,
+    private connection: Connection,
   ) {}
 
   async createPost(caption: string, userId: number) {

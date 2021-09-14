@@ -5,7 +5,7 @@ import {UpdateUserDto} from './dto/updateUserDto';
 import {UserController} from './user.controller';
 
 type SwaggerMethodDoc<T> = {
-    [K in keyof T]: (description: string) => MethodDecorator;
+  [K in keyof T]: (description: string) => MethodDecorator;
 };
 
 export const ApiDocs: SwaggerMethodDoc<UserController> = {

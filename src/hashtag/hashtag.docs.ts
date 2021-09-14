@@ -3,7 +3,7 @@ import {ApiOperation, ApiParam} from '@nestjs/swagger';
 import {HashtagController} from './hashtag.controller';
 
 type SwaggerMethodDoc<T> = {
-    [K in keyof T]: (description: string) => MethodDecorator;
+  [K in keyof T]: (description: string) => MethodDecorator;
 };
 
 export const ApiDocs: SwaggerMethodDoc<HashtagController> = {

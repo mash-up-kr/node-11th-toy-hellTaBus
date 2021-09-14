@@ -6,8 +6,8 @@ import {Repository} from 'typeorm';
 @Injectable()
 export class HashtagService {
   constructor(
-        @InjectRepository(Hashtag)
-        private readonly hashtagRepository: Repository<Hashtag>,
+    @InjectRepository(Hashtag)
+    private readonly hashtagRepository: Repository<Hashtag>,
   ) {}
 
   findHashtag(id: number) {
