@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HashtagService } from './hashtag.service';
+import {Test, TestingModule} from '@nestjs/testing';
+import {HashtagService} from './hashtag.service';
 
 describe('HashtagService', () => {
   let service: HashtagService;

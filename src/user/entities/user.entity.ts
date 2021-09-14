@@ -1,13 +1,13 @@
-import { Post } from 'src/post/entities/post.entity';
-import { PostLike } from 'src/post/entities/postlike.entity';
+import {Post} from 'src/post/entities/post.entity';
+import {PostLike} from 'src/post/entities/postlike.entity';
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('user')
@@ -15,10 +15,10 @@ export class User {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({ length: 60 })
+    @Column({length: 60})
     password: string;
 
-    @Column({ length: 255, unique: true })
+    @Column({length: 255, unique: true})
     email: string;
 
     @CreateDateColumn()
@@ -30,9 +30,9 @@ export class User {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @OneToMany(() => Post, post => post.user)
+    @OneToMany(() => Post, (post) => post.userId)
     post: Post[];
 
-    @OneToMany(() => PostLike, postLike => postLike.user)
+    @OneToMany(() => PostLike, (postLike) => postLike.userId)
     postLike: PostLike[];
 }
