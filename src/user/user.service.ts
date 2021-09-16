@@ -15,8 +15,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Profile)
     private readonly profileRepository: Repository<Profile>,
-  ) {
-  }
+  ) {}
 
   async findUserByEmail(email: string) {
     const user = await this.userRepository.findOne({

@@ -5,11 +5,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'google'
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'google'],
   root: true,
   env: {
     node: true,
@@ -21,8 +17,9 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    "new-cap": 0,
-    "require-jsdoc": 0,
-    "strict": 0,
+    'new-cap': 0,
+    'require-jsdoc': 0,
+    'no-unused-vars': 'off',
+    strict: 0,
   },
 };

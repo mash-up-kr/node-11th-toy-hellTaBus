@@ -1,8 +1,13 @@
+import {Post} from 'src/post/entities/post.entity';
+import {PostLike} from 'src/post/entities/postlike.entity';
 import {
   Column,
-  CreateDateColumn, DeleteDateColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('user')
@@ -24,4 +29,10 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @OneToMany(() => Post, (post) => post.userId)
+  post: Post[];
+
+  @OneToMany(() => PostLike, (postLike) => postLike.userId)
+  postLike: PostLike[];
 }
