@@ -8,6 +8,7 @@ type SwaggerMethodDoc<T> = {
   [K in keyof T]: (description: string) => MethodDecorator;
 };
 
+// TODO: 재검토 필요 (Response DTO 정의? + 전체적으로 점검)
 export const ApiDocs: SwaggerMethodDoc<UserController> = {
   createUser(summary) {
     return applyDecorators(
@@ -71,6 +72,12 @@ export const ApiDocs: SwaggerMethodDoc<UserController> = {
     );
   },
   login(summary: string) {
-    return applyDecorators();
+    return applyDecorators(
+        ApiResponse({status: 403, description: 'Forbidden.'}),
+        ApiOperation({
+          summary,
+          description: '로그인합니다.',
+        }),
+    );
   },
 };

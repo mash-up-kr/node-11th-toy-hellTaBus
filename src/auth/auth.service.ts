@@ -17,6 +17,7 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.userRepository.findOne({
       where: {email},
+      select: ['id', 'email', 'password'],
     });
 
     const isSamePassword = await bcrypt.compare(pass, user.password);
