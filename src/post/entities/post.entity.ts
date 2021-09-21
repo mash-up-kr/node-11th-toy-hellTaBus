@@ -2,24 +2,18 @@ import {User} from '../../user/entities/user.entity';
 import {
   Column,
   DeleteDateColumn,
-  Entity,
-  Index,
+  Entity, JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {HashtagPost} from './hashtagPost.entity';
-import {PostLike} from './postlike.entity';
+import {Hashtag} from '../../hashtag/entities/hashtag.entity';
 
-@Index('userId', ['userId'], {})
 @Entity('post')
 export class Post {
   @PrimaryGeneratedColumn('increment')
   id: number;
-
-  @Column()
-  userId: number;
 
   @Column()
   caption: string;
@@ -30,15 +24,18 @@ export class Post {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToOne(() => User, (user) => user.post, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  @ManyToOne(() => User, (user) => user.posts)
   user: User;
 
-  @OneToMany(() => PostLike, (postLike) => postLike.postId)
-  postLike: PostLike[];
+  @ManyToMany(() => Hashtag)
+  @JoinTable({
+    name: 'postHashtag',
+  })
+  hashtags: Hashtag[];
 
-  @OneToMany(() => HashtagPost, (hashtagPost) => hashtagPost.postId)
-  hashtag: HashtagPost[];
+  @ManyToMany(() => User, (user) => user.likePosts)
+  likeUsers: User[];
+
+  @Column()
+  likeCnt: number;
 }

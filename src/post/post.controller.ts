@@ -9,7 +9,6 @@ import {
   Req,
   UseGuards,
   ParseIntPipe,
-  Put,
 } from '@nestjs/common';
 import {PostService} from './post.service';
 import {CreatePostDto} from './dto/create-post.dto';
@@ -52,13 +51,13 @@ export class PostController {
     return this.postService.deletePost(id, req.user.id);
   }
 
-  @Put(':id/like')
+  @Post(':id/like')
   @ApiDocs.likePost('게시물 좋아요')
   likePost(@Req() req, @Param('id', ParseIntPipe) id: number) {
     return this.postService.likePost(id, req.user.id);
   }
 
-  @Delete(':id/dislike')
+  @Delete(':id/like')
   @ApiDocs.dislikePost('게시물 좋아요 삭제')
   dislikePost(@Req() req, @Param('id', ParseIntPipe) id: number) {
     return this.postService.dislikePost(id, req.user.id);

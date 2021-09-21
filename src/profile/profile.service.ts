@@ -4,6 +4,7 @@ import {UpdateProfileDto} from './dto/update-profile.dto';
 
 @Injectable()
 export class ProfileService {
+  /* eslint-disable-next-line */
   create(createProfileDto: CreateProfileDto) {
     return 'This action adds a new profile';
   }
@@ -16,6 +17,7 @@ export class ProfileService {
     return `This action returns a #${id} profile`;
   }
 
+  /* eslint-disable-next-line */
   update(id: number, updateProfileDto: UpdateProfileDto) {
     return `This action updates a #${id} profile`;
   }
