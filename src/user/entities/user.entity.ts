@@ -1,10 +1,9 @@
-import {Post} from 'src/post/entities/post.entity';
-import {PostLike} from 'src/post/entities/postlike.entity';
+import {Post} from '../../post/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
-  Entity,
+  Entity, JoinTable, ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -15,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({length: 60})
+  @Column({length: 60, select: false})
   password: string;
 
   @Column({length: 255, unique: true})
@@ -30,9 +29,12 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @OneToMany(() => Post, (post) => post.userId)
-  post: Post[];
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 
-  @OneToMany(() => PostLike, (postLike) => postLike.userId)
-  postLike: PostLike[];
+  @ManyToMany(() => Post, (post) => post.likeUsers)
+  @JoinTable({
+    name: 'postLike',
+  })
+  likePosts: Post[];
 }
